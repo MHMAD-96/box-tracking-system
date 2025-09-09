@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Box Tracker">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQm94IFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiQm94VHJhY2tlciIsImRlc2NyaXB0aW9uIjoi2YbYudin2YUg2KrYqtio2Lkg2LXZhtin2YrYr9mKIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmZmZmZmYiLCJ0aGVtZV9jb2xvciI6IiM2NjdlZWEiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUhabGNuTnBiMjQ5SWpFdU1TQXhJREF0TkMweUxqVWdNaTR6SWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpUGdvZ0lDQThjbVZqZENCNFBTSXhOaUlnZVQwaU1UWWlJSGRwWkhSb1BTSTVOaUlnYUdWcFoyaDBQU0k1TmlJZ1pubHNiRDBpSXprNU1pSTRNakVpSUhKNFBTSTRJaTgrQ2lBZ0lEeDBaWGgwSUhnOUlqWTBJaUI1UFNJek1pSWdabWxzYkQwaUluWm1abVppSWlCbWIyNTBMWE5wZW1VOUlqSXpJaUIwWlhoMExXRnVZMmh2Y2owaWJXbGtaR3hsSWo0NFEwczRRaUF6ZURFd1BDOTBaWGgwUGdvOEwzTjJaejQ9IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjEyOHgxMjgifV19">
+    <title>Box Tracker - نظام تتبع الصناديق</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        body.en {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        body.en * {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            position: relative;
+        }
+        
+        .language-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .language-toggle:hover {
+            background: var(--secondary-color);
+        }
+        
+        .install-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .user-role {
+            background: var(--warning-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 12px 8px;
+            background: var(--bg-color);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn.success { background: var(--success-color); }
+        .btn.danger { background: var(--danger-color); }
+        .btn.warning { background: var(--warning-color); }
+        
+        .photo-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .photo-input input[type="file"] {
+            flex: 1;
+        }
+        
+        .photo-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .summary-card {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 4px solid var(--primary-color);
+        }
+        
+        .summary-card.rtl {
+            border-right: none;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .driver-stats {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .driver-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .loss-percentage {
+            font-weight: bold;
+        }
+        
+        .loss-low { color: var(--success-color); }
+        .loss-medium { color: var(--warning-color); }
+        .loss-high { color: var(--danger-color); }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .alert.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .login-form {
+            max-width: 300px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .whatsapp-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                flex: none;
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Alert -->
+    <div id="whatsappAlert" class="whatsapp-alert">
+        <div id="whatsappText"></div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="login-form">
+        <h2 data-ar="دخول النظام" data-en="System Login">دخول النظام</h2>
+        <div class="form-group">
+            <label data-ar="نوع المستخدم" data-en="User Type">نوع المستخدم</label>
+            <select id="userType">
+                <option value="driver" data-ar="سائق" data-en="Driver">سائق</option>
+                <option value="manager" data-ar="مدير" data-en="Manager">مدير</option>
+            </select>
+        </div>
+        <div class="form-group" id="driverSelectGroup">
+            <label data-ar="اختر اسمك" data-en="Select Your Name">اختر اسمك</label>
+            <select id="loginDriverSelect">
+                <option value="" data-ar="اختر السائق" data-en="Select Driver">اختر السائق</option>
+            </select>
+        </div>
+        <div class="form-group hidden" id="passwordGroup">
+            <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+            <input type="password" id="managerPassword" placeholder="أدخل كلمة المرور">
+        </div>
+        <button class="btn" onclick="login()" data-ar="دخول" data-en="Login">دخول</button>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="container hidden">
+        <div class="header">
+            <button class="language-toggle" onclick="toggleLanguage()" id="langToggle">EN</button>
+            <button class="install-button" onclick="installApp()" id="installBtn" data-ar="تثبيت التطبيق" data-en="Install App">تثبيت التطبيق</button>
+            <h1 data-ar="🚚 نظام تتبع الصناديق" data-en="🚚 Box Tracking System">🚚 نظام تتبع الصناديق</h1>
+            <p data-ar="مخبز التوزيع - إدارة الصناديق" data-en="Distribution Bakery - Box Management">مخبز التوزيع - إدارة الصناديق</p>
+            <div class="user-role" id="userRole"></div>
+            <button class="btn danger" onclick="logout()" style="width: auto; padding: 8px 20px; margin-top: 10px;" data-ar="خروج" data-en="Logout">خروج</button>
+        </div>
+        
+        <div class="tabs" id="mainTabs">
+            <button class="tab-button active" onclick="showTab('delivery')" data-ar="تسليم صناديق" data-en="Delivery">تسليم صناديق</button>
+            <button class="tab-button" onclick="showTab('return')" data-ar="استلام صناديق" data-en="Return">استلام صناديق</button>
+            <button class="tab-button" onclick="showTab('reports')" data-ar="التقارير" data-en="Reports">التقارير</button>
+            <button class="tab-button hidden" id="managerTab" onclick="showTab('manager')" data-ar="إدارة" data-en="Management">إدارة</button>
+        </div>
+        
+        <!-- Delivery Tab -->
+        <div id="delivery" class="tab-content active">
+            <h2 data-ar="📦 تسليم صناديق" data-en="📦 Box Delivery">📦 تسليم صناديق</h2>
+            <div class="form-group" id="deliveryDriverGroup">
+                <label data-ar="اسم السائق:" data-en="Driver Name:">اسم السائق:</label>
+                <select id="driverSelect">
+                    <option value="" data-ar="اختر السائق" data-en="Select Driver">اختر السائق</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label data-ar="عدد الصناديق المسلمة:" data-en="Number of Boxes Delivered:">عدد الصناديق المسلمة:</label>
+                <input type="number" id="deliveredBoxes" placeholder="أدخل عدد الصناديق" min="1">
+            </div>
+            <div class="form-group">
+                <label data-ar="صورة الصناديق قبل التسليم:" data-en="Photo Before Delivery:">صورة الصناديق قبل التسليم:</label>
+                <div class="photo-input">
+                    <input type="file" id="deliveryPhoto" accept="image/*" capture="camera">
+                    <button type="button" onclick="document.getElementById('deliveryPhoto').click()" class="btn" style="width: auto; padding: 10px;">📷</button>
+                </div>
+                <img id="deliveryPreview" class="photo-preview hidden" alt="Preview">
+            </div>
+            <div class="form-group">
+                <label data-ar="ملاحظات:" data-en="Notes:">ملاحظات:</label>
+                <textarea id="deliveryNotes" placeholder="أضف أي ملاحظات..." rows="3"></textarea>
+            </div>
+            <button class="btn" onclick="recordDelivery()" data-ar="تسجيل التسليم" data-en="Record Delivery">تسجيل التسليم</button>
+            <div id="deliveryMessage"></div>
+        </div>
+        
+        <!-- Return Tab -->
+        <div id="return" class="tab-content">
+            <h2 data-ar="📥 استلام صناديق" data-en="📥 Box Return">📥 استلام صناديق</h2>
+            <div class="form-group" id="returnDriverGroup">
+                <label data-ar="اسم السائق:" data-en="Driver Name:">اسم السائق:</label>
+                <select id="returnDriverSelect">
+                    <option value="" data-ar="اختر السائق" data-en="Select Driver">اختر السائق</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label data-ar="عدد الصناديق المستلمة:" data-en="Number of Boxes Returned:">عدد الصناديق المستلمة:</label>
+                <input type="number" id="returnedBoxes" placeholder="أدخل عدد الصناديق" min="0">
+            </div>
+            <div class="form-group">
+                <label data-ar="صورة الصناديق المسترجعة:" data-en="Photo of Returned Boxes:">صورة الصناديق المسترجعة:</label>
+                <div class="photo-input">
+                    <input type="file" id="returnPhoto" accept="image/*" capture="camera">
+                    <button type="button" onclick="document.getElementById('returnPhoto').click()" class="btn" style="width: auto; padding: 10px;">📷</button>
+                </div>
+                <img id="returnPreview" class="photo-preview hidden" alt="Preview">
+            </div>
+            <div class="form-group">
+                <label data-ar="ملاحظات:" data-en="Notes:">ملاحظات:</label>
+                <textarea id="returnNotes" placeholder="أضف أي ملاحظات..." rows="3"></textarea>
+            </div>
+            <button class="btn" onclick="recordReturn()" data-ar="تسجيل الاستلام" data-en="Record Return">تسجيل الاستلام</button>
+            <div id="returnMessage"></div>
+        </div>
+        
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <h2 data-ar="📊 تقارير الأداء" data-en="📊 Performance Reports">📊 تقارير الأداء</h2>
+            
+            <div class="summary-card">
+                <h3 data-ar="الإحصائيات العامة" data-en="General Statistics">الإحصائيات العامة</h3>
+                <div class="stat-row">
+                    <span data-ar="إجمالي الصناديق المسلمة:" data-en="Total Delivered:">إجمالي الصناديق المسلمة:</span>
+                    <span id="totalDelivered">0</span>
+                </div>
+                <div class="stat-row">
+                    <span data-ar="إجمالي الصناديق المستلمة:" data-en="Total Returned:">إجمالي الصناديق المستلمة:</span>
+                    <span id="totalReturned">0</span>
+                </div>
+                <div class="stat-row">
+                    <span data-ar="إجمالي المفقود:" data-en="Total Lost:">إجمالي المفقود:</span>
+                    <span id="totalLost">0</span>
+                </div>
+                <div class="stat-row">
+                    <span data-ar="نسبة الهدر:" data-en="Loss Percentage:">نسبة الهدر:</span>
+                    <span class="loss-percentage" id="lossPercentage">0%</span>
+                </div>
+                <div class="stat-row">
+                    <span data-ar="التكلفة المالية للهدر:" data-en="Financial Loss:">التكلفة المالية للهدر:</span>
+                    <span id="lossCost" data-ar-suffix=" درهم" data-en-suffix=" AED">0 درهم</span>
+                </div>
+            </div>
+            
+            <h3 data-ar="أداء السائقين" data-en="Driver Performance">أداء السائقين</h3>
+            <div id="driverStats"></div>
+        </div>
+        
+        <!-- Manager Tab -->
+        <div id="manager" class="tab-content">
+            <h2 data-ar="⚙️ لوحة تحكم المدير" data-en="⚙️ Manager Dashboard">⚙️ لوحة تحكم المدير</h2>
+            
+            <div class="form-group">
+                <label data-ar="رقم مجموعة الواتساب:" data-en="WhatsApp Group Number:">رقم مجموعة الواتساب:</label>
+                <input type="text" id="whatsappGroup" placeholder="+971xxxxxxxxx" value="+971501234567">
+            </div>
+            
+            <div class="form-group">
+                <label data-ar="حد تنبيه نسبة الهدر (%):" data-en="Loss Alert Threshold (%):">حد تنبيه نسبة الهدر (%):</label>
+                <input type="number" id="alertThreshold" value="20" min="1" max="100">
+            </div>
+            
+            <button class="btn warning" onclick="sendTestAlert()" data-ar="اختبار تنبيه واتساب" data-en="Test WhatsApp Alert">اختبار تنبيه واتساب</button>
+            <button class="btn" onclick="exportData()" data-ar="تصدير البيانات" data-en="Export Data">تصدير البيانات</button>
+            <button class="btn danger" onclick="clearAllData()" data-ar="مسح جميع البيانات" data-en="Clear All Data">مسح جميع البيانات</button>
+            
+            <div class="summary-card">
+                <h3 data-ar="إعدادات النظام" data-en="System Settings">إعدادات النظام</h3>
+                <div class="stat-row">
+                    <span data-ar="عدد السائقين:" data-en="Number of Drivers:">عدد السائقين:</span>
+                    <span id="driverCount">13</span>
+                </div>
+                <div class="stat-row">
+                    <span data-ar="آخر تحديث:" data-en="Last Update:">آخر تحديث:</span>
+                    <span id="lastUpdate">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تكوين التطبيق
+        const CONFIG = {
+            drivers: [
+                'RAMIS', 'RAMSHAD', 'MADHU', 'SIDHIQ', 'ASIF', 'IRFAN', 'MIBIN', 
+                'MOHAMMED', 'PRADEESH', 'BASAHR', 'NABIL', 'ARIF', 'KHATEEB'
+            ],
+            managerPassword: 'admin123',
+            alertThreshold: 20,
+            boxCost: 20,
+            whatsappGroup: '+971501234567'
+        };
+        
+        // متغيرات النظام
+        let currentUser = null;
+        let currentRole = null;
+        let currentLanguage = 'ar';
+        let deferredPrompt;
+        
+        // النصوص متعددة اللغات
+        const translations = {
+            ar: {
+                'System Login': 'دخول النظام',
+                'User Type': 'نوع المستخدم',
+                'Driver': 'سائق',
+                'Manager': 'مدير',
+                'Select Your Name': 'اختر اسمك',
+                'Select Driver': 'اختر السائق',
+                'Password': 'كلمة المرور',
+                'Login': 'دخول',
+                'Logout': 'خروج'
+            },
+            en: {
+                'دخول النظام': 'System Login',
+                'نوع المستخدم': 'User Type',
+                'سائق': 'Driver',
+                'مدير': 'Manager',
+                'اختر اسمك': 'Select Your Name',
+                'اختر السائق': 'Select Driver',
+                'كلمة المرور': 'Password',
+                'دخول': 'Login',
+                'خروج': 'Logout'
+            }
+        };
+        
+        // تحميل التطبيق عند بدء الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDrivers();
+            setupPhotoPreview();
+            setupPWA();
+            updateLanguage();
+            checkAutoLogin();
+        });
+        
+        // إعداد PWA
+        function setupPWA() {
+            // إعداد service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge30pOw==');
+            }
+            
+            // إعداد تثبيت التطبيق
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installBtn').style.display = 'block';
+            });
+        }
+        
+        // تثبيت التطبيق
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted installation');
+                        document.getElementById('installAppBtn').style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                showInstallInstructions();
+            }
+        }
+        
+        // إظهار تعليمات التثبيت
+        function showInstallInstructions() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+            
+            let instructions = '';
+            
+            if (isIOS) {
+                instructions = currentLanguage === 'ar' ? 
+                    'لتثبيت التطبيق على iPhone/iPad:\n\n1. اضغط على زر المشاركة (↗️)\n2. اختر "إضافة إلى الشاشة الرئيسية"\n3. اضغط "إضافة"' :
+                    'To install on iPhone/iPad:\n\n1. Tap the Share button (↗️)\n2. Select "Add to Home Screen"\n3. Tap "Add"';
+            } else if (isAndroid) {
+                instructions = currentLanguage === 'ar' ? 
+                    'لتثبيت التطبيق على Android:\n\n1. اضغط على قائمة المتصفح (⋮)\n2. اختر "إضافة إلى الشاشة الرئيسية"\n3. اضغط "إضافة"' :
+                    'To install on Android:\n\n1. Tap browser menu (⋮)\n2. Select "Add to Home Screen"\n3. Tap "Add"';
+            } else {
+                instructions = currentLanguage === 'ar' ? 
+                    'يمكنك إضافة التطبيق كمرجعية في متصفحك للوصول السريع' :
+                    'You can bookmark this app in your browser for quick access';
+            }
+            
+            alert(instructions);
+        }
+        
+        // تحميل قائمة السائقين
+        function loadDrivers() {
+            const selects = ['driverSelect', 'returnDriverSelect', 'loginDriverSelect'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    // مسح الخيارات الحالية (عدا الأول)
+                    while (select.children.length > 1) {
+                        select.removeChild(select.lastChild);
+                    }
+                    
+                    CONFIG.drivers.forEach(driver => {
+                        const option = new Option(driver, driver);
+                        select.add(option);
+                    });
+                }
+            });
+        }
+        
+        // إعداد معاينة الصور
+        function setupPhotoPreview() {
+            const photoInputs = [
+                { input: 'deliveryPhoto', preview: 'deliveryPreview' },
+                { input: 'returnPhoto', preview: 'returnPreview' }
+            ];
+            
+            photoInputs.forEach(({input, preview}) => {
+                const inputElement = document.getElementById(input);
+                const previewElement = document.getElementById(preview);
+                
+                if (inputElement && previewElement) {
+                    inputElement.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                previewElement.src = e.target.result;
+                                previewElement.classList.remove('hidden');
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            });
+        }
+        
+        // فحص تسجيل الدخول التلقائي
+        function checkAutoLogin() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedRole = localStorage.getItem('currentRole');
+            
+            if (savedUser && savedRole) {
+                currentUser = savedUser;
+                currentRole = savedRole;
+                showMainApp();
+            }
+        }
+        
+        // تبديل اللغة
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+            localStorage.setItem('language', currentLanguage);
+        }
+        
+        // تحديث اللغة
+        function updateLanguage() {
+            const body = document.body;
+            const langToggle = document.getElementById('langToggle');
+            
+            if (currentLanguage === 'en') {
+                body.classList.add('en');
+                body.style.direction = 'ltr';
+                langToggle.textContent = 'عربي';
+                
+                // تحديث الملخصات
+                document.querySelectorAll('.summary-card').forEach(card => {
+                    card.classList.add('rtl');
+                });
+            } else {
+                body.classList.remove('en');
+                body.style.direction = 'rtl';
+                langToggle.textContent = 'EN';
+                
+                document.querySelectorAll('.summary-card').forEach(card => {
+                    card.classList.remove('rtl');
+                });
+            }
+            
+            // تحديث النصوص
+            document.querySelectorAll('[data-ar]').forEach(element => {
+                const arText = element.getAttribute('data-ar');
+                const enText = element.getAttribute('data-en');
+                
+                if (currentLanguage === 'ar' && arText) {
+                    element.textContent = arText;
+                } else if (currentLanguage === 'en' && enText) {
+                    element.textContent = enText;
+                }
+            });
+            
+            // تحديث العناصر النصية المتغيرة
+            updateReports();
+        }
+        
+        // تسجيل الدخول
+        function login() {
+            const userType = document.getElementById('userType').value;
+            const driver = document.getElementById('loginDriverSelect').value;
+            const password = document.getElementById('managerPassword').value;
+            
+            if (userType === 'driver') {
+                if (!driver) {
+                    showAlert('يرجى اختيار اسم السائق', 'Please select driver name', 'danger');
+                    return;
+                }
+                currentUser = driver;
+                currentRole = 'driver';
+            } else if (userType === 'manager') {
+                if (password !== CONFIG.managerPassword) {
+                    showAlert('كلمة مرور خاطئة', 'Wrong password', 'danger');
+                    return;
+                }
+                currentUser = 'Manager';
+                currentRole = 'manager';
+            }
+            
+            // حفظ بيانات الدخول
+            localStorage.setItem('currentUser', currentUser);
+            localStorage.setItem('currentRole', currentRole);
+            
+            showMainApp();
+        }
+        
+        // إظهار التطبيق الرئيسي
+        function showMainApp() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // إعداد واجهة المستخدم
+            const userRole = document.getElementById('userRole');
+            const managerTab = document.getElementById('managerTab');
+            const deliveryDriverGroup = document.getElementById('deliveryDriverGroup');
+            const returnDriverGroup = document.getElementById('returnDriverGroup');
+            
+            if (currentRole === 'manager') {
+                userRole.textContent = currentLanguage === 'ar' ? 'مدير النظام' : 'System Manager';
+                managerTab.classList.remove('hidden');
+            } else {
+                userRole.textContent = currentUser;
+                managerTab.classList.add('hidden');
+                
+                // إخفاء قائمة السائقين للسائق وتعيين اسمه تلقائياً
+                deliveryDriverGroup.style.display = 'none';
+                returnDriverGroup.style.display = 'none';
+                document.getElementById('driverSelect').value = currentUser;
+                document.getElementById('returnDriverSelect').value = currentUser;
+            }
+            
+            updateReports();
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentRole');
+            currentUser = null;
+            currentRole = null;
+            
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            
+            // مسح الحقول
+            document.getElementById('loginDriverSelect').value = '';
+            document.getElementById('managerPassword').value = '';
+        }
+        
+        // إظهار التبويبات
+        function showTab(tabName) {
+            // إخفاء جميع التبويبات
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // إظهار التبويب المحدد
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            // تحديث التقارير عند فتحها
+            if (tabName === 'reports' || tabName === 'manager') {
+                updateReports();
+            }
+        }
+        
+        // إظهار رسائل التنبيه
+        function showAlert(arMessage, enMessage, type = 'success') {
+            const message = currentLanguage === 'ar' ? arMessage : enMessage;
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.textContent = message;
+            
+            return alertDiv.outerHTML;
+        }
+        
+        // تسجيل تسليم الصناديق
+        function recordDelivery() {
+            const driver = document.getElementById('driverSelect').value;
+            const boxes = parseInt(document.getElementById('deliveredBoxes').value);
+            const photo = document.getElementById('deliveryPhoto').files[0];
+            const notes = document.getElementById('deliveryNotes').value;
+            const messageDiv = document.getElementById('deliveryMessage');
+            
+            if (!driver || !boxes || boxes <= 0) {
+                messageDiv.innerHTML = showAlert(
+                    'يرجى تعبئة جميع الحقول بشكل صحيح',
+                    'Please fill all fields correctly',
+                    'danger'
+                );
+                return;
+            }
+            
+            // معالجة الصورة
+            let photoData = null;
+            if (photo) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoData = e.target.result;
+                    saveDelivery(driver, boxes, photoData, notes, messageDiv);
+                };
+                reader.readAsDataURL(photo);
+            } else {
+                saveDelivery(driver, boxes, null, notes, messageDiv);
+            }
+        }
+        
+        // حفظ بيانات التسليم
+        function saveDelivery(driver, boxes, photo, notes, messageDiv) {
+            let deliveries = JSON.parse(localStorage.getItem('deliveries') || '[]');
+            const delivery = {
+                id: Date.now(),
+                driver: driver,
+                boxes: boxes,
+                photo: photo,
+                notes: notes,
+                date: new Date().toISOString(),
+                timestamp: new Date().toLocaleString(currentLanguage === 'ar' ? 'ar-AE' : 'en-US')
+            };
+            
+            deliveries.push(delivery);
+            localStorage.setItem('deliveries', JSON.stringify(deliveries));
+            
+            // رسالة نجاح
+            messageDiv.innerHTML = showAlert(
+                `✅ تم تسجيل تسليم ${boxes} صندوق للسائق ${driver}`,
+                `✅ Recorded delivery of ${boxes} boxes for driver ${driver}`,
+                'success'
+            );
+            
+            // مسح الحقول
+            document.getElementById('deliveredBoxes').value = '';
+            document.getElementById('deliveryPhoto').value = '';
+            document.getElementById('deliveryNotes').value = '';
+            document.getElementById('deliveryPreview').classList.add('hidden');
+            
+            // تحديث آخر نشاط
+            localStorage.setItem('lastUpdate', new Date().toLocaleString());
+        }
+        
+        // تسجيل استلام الصناديق
+        function recordReturn() {
+            const driver = document.getElementById('returnDriverSelect').value;
+            const boxes = parseInt(document.getElementById('returnedBoxes').value);
+            const photo = document.getElementById('returnPhoto').files[0];
+            const notes = document.getElementById('returnNotes').value;
+            const messageDiv = document.getElementById('returnMessage');
+            
+            if (!driver || boxes < 0) {
+                messageDiv.innerHTML = showAlert(
+                    'يرجى تعبئة جميع الحقول بشكل صحيح',
+                    'Please fill all fields correctly',
+                    'danger'
+                );
+                return;
+            }
+            
+            // معالجة الصورة
+            let photoData = null;
+            if (photo) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoData = e.target.result;
+                    saveReturn(driver, boxes, photoData, notes, messageDiv);
+                };
+                reader.readAsDataURL(photo);
+            } else {
+                saveReturn(driver, boxes, null, notes, messageDiv);
+            }
+        }
+        
+        // حفظ بيانات الاستلام
+        function saveReturn(driver, boxes, photo, notes, messageDiv) {
+            let returns = JSON.parse(localStorage.getItem('returns') || '[]');
+            const returnData = {
+                id: Date.now(),
+                driver: driver,
+                boxes: boxes,
+                photo: photo,
+                notes: notes,
+                date: new Date().toISOString(),
+                timestamp: new Date().toLocaleString(currentLanguage === 'ar' ? 'ar-AE' : 'en-US')
+            };
+            
+            returns.push(returnData);
+            localStorage.setItem('returns', JSON.stringify(returns));
+            
+            // رسالة نجاح
+            messageDiv.innerHTML = showAlert(
+                `✅ تم تسجيل استلام ${boxes} صندوق من السائق ${driver}`,
+                `✅ Recorded return of ${boxes} boxes from driver ${driver}`,
+                'success'
+            );
+            
+            // مسح الحقول
+            document.getElementById('returnedBoxes').value = '';
+            document.getElementById('returnPhoto').value = '';
+            document.getElementById('returnNotes').value = '';
+            document.getElementById('returnPreview').classList.add('hidden');
+            
+            // فحص نسبة الهدر وإرسال تنبيه إذا لزم الأمر
+            checkLossAlert(driver);
+            
+            // تحديث آخر نشاط
+            localStorage.setItem('lastUpdate', new Date().toLocaleString());
+        }
+        
+        // فحص تنبيه نسبة الهدر
+        function checkLossAlert(driver) {
+            const stats = calculateDriverStats(driver);
+            const threshold = parseInt(localStorage.getItem('alertThreshold') || '20');
+            
+            if (stats.lossRate >= threshold) {
+                sendWhatsAppAlert(driver, stats);
+            }
+        }
+        
+        // حساب إحصائيات السائق
+        function calculateDriverStats(driverName) {
+            const deliveries = JSON.parse(localStorage.getItem('deliveries') || '[]');
+            const returns = JSON.parse(localStorage.getItem('returns') || '[]');
+            
+            const driverDeliveries = deliveries.filter(d => d.driver === driverName);
+            const driverReturns = returns.filter(r => r.driver === driverName);
+            
+            const delivered = driverDeliveries.reduce((sum, d) => sum + d.boxes, 0);
+            const returned = driverReturns.reduce((sum, r) => sum + r.boxes, 0);
+            const lost = delivered - returned;
+            const lossRate = delivered > 0 ? ((lost / delivered) * 100) : 0;
+            const cost = lost * CONFIG.boxCost;
+            
+            return { delivered, returned, lost, lossRate, cost };
+        }
+        
+        // إرسال تنبيه واتساب
+        function sendWhatsAppAlert(driver, stats) {
+            const groupNumber = localStorage.getItem('whatsappGroup') || CONFIG.whatsappGroup;
+            const message = currentLanguage === 'ar' ? 
+                `🚨 تنبيه هدر صناديق\n\nالسائق: ${driver}\nنسبة الهدر: ${stats.lossRate.toFixed(1)}%\nعدد الصناديق المفقودة: ${stats.lost}\nالتكلفة: ${stats.cost} درهم\n\nيرجى المتابعة فوراً` :
+                `🚨 Box Loss Alert\n\nDriver: ${driver}\nLoss Rate: ${stats.lossRate.toFixed(1)}%\nLost Boxes: ${stats.lost}\nCost: ${stats.cost} AED\n\nPlease follow up immediately`;
+            
+            const whatsappUrl = `https://wa.me/${groupNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;
+            
+            // إظهار تنبيه في التطبيق
+            showWhatsAppAlert(message);
+            
+            // فتح واتساب (في المتصفح)
+            if (confirm(currentLanguage === 'ar' ? 'هل تريد إرسال التنبيه عبر واتساب؟' : 'Send alert via WhatsApp?')) {
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+        
+        // إظهار تنبيه واتساب في التطبيق
+        function showWhatsAppAlert(message) {
+            const alertDiv = document.getElementById('whatsappAlert');
+            const textDiv = document.getElementById('whatsappText');
+            
+            textDiv.textContent = message;
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // اختبار تنبيه واتساب
+        function sendTestAlert() {
+            const testMessage = currentLanguage === 'ar' ? 
+                '🧪 اختبار نظام التنبيهات\n\nالنظام يعمل بشكل صحيح ✅' :
+                '🧪 Alert System Test\n\nSystem working correctly ✅';
+            
+            showWhatsAppAlert(testMessage);
+        }
+        
+        // تحديث التقارير
+        function updateReports() {
+            const deliveries = JSON.parse(localStorage.getItem('deliveries') || '[]');
+            const returns = JSON.parse(localStorage.getItem('returns') || '[]');
+            
+            // حساب الإحصائيات العامة
+            const totalDelivered = deliveries.reduce((sum, d) => sum + d.boxes, 0);
+            const totalReturned = returns.reduce((sum, r) => sum + r.boxes, 0);
+            const totalLost = totalDelivered - totalReturned;
+            const lossPercentage = totalDelivered > 0 ? ((totalLost / totalDelivered) * 100).toFixed(1) : 0;
+            const lossCost = totalLost * CONFIG.boxCost;
+            
+            // تحديث العناصر
+            document.getElementById('totalDelivered').textContent = totalDelivered.toLocaleString();
+            document.getElementById('totalReturned').textContent = totalReturned.toLocaleString();
+            document.getElementById('totalLost').textContent = totalLost.toLocaleString();
+            
+            const lossPercentageElement = document.getElementById('lossPercentage');
+            lossPercentageElement.textContent = lossPercentage + '%';
+            
+            // تلوين نسبة الهدر
+            lossPercentageElement.className = 'loss-percentage ';
+            if (parseFloat(lossPercentage) < 10) {
+                lossPercentageElement.className += 'loss-low';
+            } else if (parseFloat(lossPercentage) < 20) {
+                lossPercentageElement.className += 'loss-medium';
+            } else {
+                lossPercentageElement.className += 'loss-high';
+            }
+            
+            const lossCostElement = document.getElementById('lossCost');
+            const costText = lossCost.toLocaleString();
+            lossCostElement.textContent = currentLanguage === 'ar' ? costText + ' درهم' : costText + ' AED';
+            
+            // تحديث إحصائيات السائقين
+            updateDriverStats(deliveries, returns);
+            
+            // تحديث معلومات المدير
+            if (currentRole === 'manager') {
+                const lastUpdate = localStorage.getItem('lastUpdate');
+                const lastUpdateElement = document.getElementById('lastUpdate');
+                if (lastUpdateElement) {
+                    lastUpdateElement.textContent = lastUpdate || '-';
+                }
+            }
+        }
+        
+        // تحديث إحصائيات السائقين
+        function updateDriverStats(deliveries, returns) {
+            const driverStatsDiv = document.getElementById('driverStats');
+            if (!driverStatsDiv) return;
+            
+            const driverStats = {};
+            
+            // تجميع التسليمات
+            deliveries.forEach(d => {
+                if (!driverStats[d.driver]) {
+                    driverStats[d.driver] = { delivered: 0, returned: 0 };
+                }
+                driverStats[d.driver].delivered += d.boxes;
+            });
+            
+            // تجميع الاستلامات
+            returns.forEach(r => {
+                if (!driverStats[r.driver]) {
+                    driverStats[r.driver] = { delivered: 0, returned: 0 };
+                }
+                driverStats[r.driver].returned += r.boxes;
+            });
+            
+            // مسح المحتوى السابق
+            driverStatsDiv.innerHTML = '';
+            
+            // ترتيب السائقين حسب نسبة الهدر
+            const sortedDrivers = Object.keys(driverStats).sort((a, b) => {
+                const lossA = driverStats[a].delivered > 0 ? 
+                    ((driverStats[a].delivered - driverStats[a].returned) / driverStats[a].delivered) * 100 : 0;
+                const lossB = driverStats[b].delivered > 0 ? 
+                    ((driverStats[b].delivered - driverStats[b].returned) / driverStats[b].delivered) * 100 : 0;
+                return lossB - lossA;
+            });
+            
+            sortedDrivers.forEach((driverName, index) => {
+                const stats = driverStats[driverName];
+                const lost = stats.delivered - stats.returned;
+                const lossRate = stats.delivered > 0 ? ((lost / stats.delivered) * 100).toFixed(1) : 0;
+                const cost = lost * CONFIG.boxCost;
+                
+                const driverDiv = document.createElement('div');
+                driverDiv.className = 'driver-stats';
+                
+                // تحديد لون نسبة الهدر
+                let lossClass = 'loss-low';
+                if (parseFloat(lossRate) >= 20) lossClass = 'loss-high';
+                else if (parseFloat(lossRate) >= 10) lossClass = 'loss-medium';
+                
+                driverDiv.innerHTML = `
+                    <div class="driver-name">
+                        ${index + 1}. ${driverName}
+                        ${parseFloat(lossRate) >= 20 ? ' 🚨' : parseFloat(lossRate) >= 10 ? ' ⚠️' : ' ✅'}
+                    </div>
+                    <div class="stat-row">
+                        <span>${currentLanguage === 'ar' ? 'مُسلم:' : 'Delivered:'}</span>
+                        <span>${stats.delivered.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>${currentLanguage === 'ar' ? 'مُستلم:' : 'Returned:'}</span>
+                        <span>${stats.returned.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>${currentLanguage === 'ar' ? 'مفقود:' : 'Lost:'}</span>
+                        <span>${lost.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>${currentLanguage === 'ar' ? 'نسبة الهدر:' : 'Loss Rate:'}</span>
+                        <span class="loss-percentage ${lossClass}">${lossRate}%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>${currentLanguage === 'ar' ? 'التكلفة:' : 'Cost:'}</span>
+                        <span>${cost.toLocaleString()} ${currentLanguage === 'ar' ? 'درهم' : 'AED'}</span>
+                    </div>
+                `;
+                
+                driverStatsDiv.appendChild(driverDiv);
+            });
+        }
+        
+        // تصدير البيانات
+        function exportData() {
+            const data = {
+                deliveries: JSON.parse(localStorage.getItem('deliveries') || '[]'),
+                returns: JSON.parse(localStorage.getItem('returns') || '[]'),
+                exportDate: new Date().toISOString(),
+                version: '2.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `box-tracking-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // مسح جميع البيانات
+        function clearAllData() {
+            const confirmText = currentLanguage === 'ar' ? 
+                'هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.' :
+                'Are you sure you want to clear all data? This action cannot be undone.';
+                
+            if (confirm(confirmText)) {
+                localStorage.removeItem('deliveries');
+                localStorage.removeItem('returns');
+                localStorage.removeItem('lastUpdate');
+                updateReports();
+                
+                const successText = currentLanguage === 'ar' ? 
+                    'تم مسح جميع البيانات بنجاح' : 
+                    'All data cleared successfully';
+                alert(successText);
+            }
+        }
+        
+        // معالج تغيير نوع المستخدم
+        document.getElementById('userType').addEventListener('change', function() {
+            const passwordGroup = document.getElementById('passwordGroup');
+            const driverSelectGroup = document.getElementById('driverSelectGroup');
+            
+            if (this.value === 'manager') {
+                passwordGroup.classList.remove('hidden');
+                driverSelectGroup.classList.add('hidden');
+            } else {
+                passwordGroup.classList.add('hidden');
+                driverSelectGroup.classList.remove('hidden');
+            }
+        });
+        
+        // تحديث الإعدادات
+        function updateSettings() {
+            const whatsappGroup = document.getElementById('whatsappGroup').value;
+            const alertThreshold = document.getElementById('alertThreshold').value;
+            
+            localStorage.setItem('whatsappGroup', whatsappGroup);
+            localStorage.setItem('alertThreshold', alertThreshold);
+            
+            CONFIG.whatsappGroup = whatsappGroup;
+            CONFIG.alertThreshold = parseInt(alertThreshold);
+        }
+        
+        // استماع لتغييرات الإعدادات
+        document.addEventListener('change', function(e) {
+            if (e.target.id === 'whatsappGroup' || e.target.id === 'alertThreshold') {
+                updateSettings();
+            }
+        });
+    </script>
+</body>
+</html>
